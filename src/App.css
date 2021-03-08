@@ -33,7 +33,8 @@
 
 .card{
   display: flex;
-  margin: 50px;
+  /* margin: 50px; */
+  position: relative;
 }
 .card div{
   margin-right: 20px;

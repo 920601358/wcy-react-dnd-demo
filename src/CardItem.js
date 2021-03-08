@@ -1,82 +1,87 @@
 import React, { Component } from 'react';
-import {findDOMNode} from 'react-dom'
-import {Card} from 'antd'
+import {findDOMNode} from 'react-dom';
+import { message } from './util';
+import { componentDragDrop } from './ComponentDragDrop';
+
+import { Card } from 'antd';
 import {
     DragSource,
     DropTarget,
 } from 'react-dnd'
 
+let isEndDrag = 'undefined';
 const Types = {
     CARD: 'CARD'
 };
-const CardSource = {
-    beginDrag(props,monitor,component){
-        return {
-            index:props.index
-        }
-    }
-};
-const CardTarget = {
-    canDrop(props,monitor){ //组件可以被放置时触发的事件
 
-    },
-    hover(props,monitor,component){ //组件在target上方时触发的事件
-        if(!component) return null;
-        const dragIndex = monitor.getItem().index;//拖拽目标的Index
-        const hoverIndex = props.index; //目标Index
-        if(dragIndex === props.lastIndex || hoverIndex === props.lastIndex) return null;
-        if(dragIndex === hoverIndex) {return null}//如果拖拽目标和目标ID相同不发生变化
-        const hoverBoundingRect = (findDOMNode(component)).getBoundingClientRect();//获取卡片的边框矩形
-        const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;//获取X轴中点
-        const clientOffset = monitor.getClientOffset();//获取拖拽目标偏移量
-        const hoverClientX = (clientOffset).x - hoverBoundingRect.left;
-        if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
-            return null
-        }
-        if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
-            return null
-        }
-        props.onDND(dragIndex,hoverIndex);
-        monitor.getItem().index = hoverIndex;
-    },
-};
-function collect1(connect,monitor) {
-    return{
-        connectDropTarget:connect.dropTarget(),
-        isOver:monitor.isOver(),
-        isOverCurrent: monitor.isOver({ shallow: true }),
-        canDrop: monitor.canDrop(),
-        itemType: monitor.getItemType(),
-    }
-}
-function collect(connect,monitor) {
-    return{
-        connectDragSource:connect.dragSource(),
-        isDragging:monitor.isDragging()
-    }
-}
+let nowPosition = {};
+// const CardSource = {
+//     beginDrag(props,monitor,component){
+//         return {props: props.id}
+//     },
+//     endDrag(props,monitor,component) {
+//         console.log('拖动结束', monitor.isDragging());
+//         isEndDrag = monitor.isDragging();
+      
+//     }
+// };
+
+// function collect(connect,monitor) {
+//     // console.log('移动区域', connect, monitor);
+//     return{
+//         connectDragSource:connect.dragSource(),
+//         isDragging:monitor.isDragging()
+//     }
+// }
+
+@componentDragDrop.drag({
+	beginDrag(props, monitor, component) {
+		return {...props }
+
+	},
+	endDrag(props, monitor, component) {
+		monitor.getDropResult();
+	},
+
+}, (monitor)=>{
+	isDragging: monitor.isDragging();
+})
 
 
 class CardItem extends Component{
+    
+    isUp(params){
+        const x = params.screenX;
+        const y = params.screenY;
+        console.log('调用鼠标方法', params, x, y);
+        message.emit('isUp', params, x, y);
+    }
+
+    componentDidMount() {
+        message.on('comPosition', (params) => {
+            // message.on('isUp', (up)=>{
+            //     console.log('监听到松开了鼠标', up)
+            // })
+            nowPosition.left = params.x;
+            nowPosition.top = params.y;
+            // console.log('拖动结束 监听拖动结束事件', params, testtt)
+        })
+    }
 
     render(){
-        const { isDragging, connectDragSource, connectDropTarget} = this.props;
-        let opacity = isDragging ? 0.1 : 1;
-
+        const { isDragging, connectDragSource } = this.props;
+        console.log('是否正在拖拽', isDragging, '是否拖拽结束',isEndDrag)
+        console.log('属性', this.props)
+        let opacity = isDragging ? 0 : 1;
+        const mergeStyle = { position: 'absolute', top: nowPosition.top, left: nowPosition.left }
         return connectDragSource(
-            connectDropTarget( <div>
-                <Card
-                    title={this.props.title}
-                    style={{ width: 300 ,opacity}}
-                >
+            <div>
+                <div onMouseDown={(e)=>{this.isUp(e)}} style={{ zIndex: 999, opacity, width: 200, height: 100, backgroundColor: '#f19', ...mergeStyle }}>
                     <p>{this.props.content}</p>
-                </Card>
-            </div> )
+                </div>
+            </div>
         )
     }
 }
-let flow = require('lodash.flow');
-export default flow(
-    DragSource(Types.CARD,CardSource,collect),
-    DropTarget(Types.CARD,CardTarget,collect1)
-)(CardItem)
+// let flow = require('lodash.flow');
+export default CardItem;

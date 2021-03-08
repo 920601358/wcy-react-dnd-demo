@@ -2081,6 +2081,13 @@ camelcase@^5.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.0.0.tgz#03295527d58bd3cd4aa75363f35b2e8d97be2f42"
   integrity sha512-faqwZqnWxbxn+F1d399ygeamQNy3lPp/H9H6rNrqYh4FSVCtcY+3cub1MxA8o9mDd55mM8Aghuu/kuyYA6VTsA==
 
+candy-event-emitter@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/candy-event-emitter/-/candy-event-emitter-1.0.1.tgz#dc361953bdef726610c54e617a6e84c9c764b101"
+  integrity sha512-+uoA/F9OBktyqELx2BaeJ7g+KLdh8SqRB9+fMJZm2dXeKRv59U2kRLgVTjZXTSnsd1R9AA80P16GY7Jc665lpg==
+  dependencies:
+    invariant "^2.2.2"
+
 caniuse-api@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/caniuse-api/-/caniuse-api-3.0.0.tgz#5e4d90e2274961d46291997df599e3ed008ee4c0"

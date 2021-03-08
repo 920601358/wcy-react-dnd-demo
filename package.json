@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^3.10.7",
     "babel-plugin-import": "^1.11.0",
+    "candy-event-emitter": "^1.0.1",
     "lodash.flow": "^3.5.0",
     "react": "^16.6.3",
     "react-app-rewired": "^1.6.2",
@@ -27,5 +28,18 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ]
+    ],
+    "presets": [
+      "react-app"
+    ]
+  }
 }
