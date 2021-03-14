@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import {findDOMNode} from 'react-dom';
-import { Card } from 'antd';
 import { message } from './util';
-import {
-    DragSource,
-    DropTarget,
-} from 'react-dnd'
+import { DropTarget } from 'react-dnd'
 
 const Types = {
     CARD: 'CARD'
@@ -18,7 +14,6 @@ const CardTarget = {
         console.log('已经放置', props, monitor)
     },
     hover(props,monitor,component){ //组件在target上方时触发的事件
-        // console.log('触发了画布上方事件', props, monitor, component)
         const dragIndex = monitor.getItem().index;//拖拽目标的Index
         const hoverIndex = props.index; //目标Index
         const hoverBoundingRect = (findDOMNode(component)).getBoundingClientRect();//获取卡片的边框矩形
@@ -32,7 +27,6 @@ const CardTarget = {
     },
 };
 function collect(connect,monitor) {
-    // console.log('出现在画布上方', connect, monitor);
     return{
         connectDropTarget:connect.dropTarget(),
         isOver:monitor.isOver(),
@@ -47,7 +41,6 @@ function collect(connect,monitor) {
 class Test extends Component{
     
     render(){
-        // console.log('画布组件', this.props)
         const { isDragging, connectDropTarget} = this.props;
 
         return connectDropTarget( <div>

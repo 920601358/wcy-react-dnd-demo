@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^3.10.7",
     "babel-plugin-import": "^1.11.0",
     "candy-event-emitter": "^1.0.1",
     "lodash.flow": "^3.5.0",
@@ -36,10 +35,19 @@
         {
           "legacy": true
         }
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
       ]
     ],
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.13.5"
   }
 }

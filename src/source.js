@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import {findDOMNode} from 'react-dom';
 import { message } from './util';
 import { componentDragDrop } from './ComponentDragDrop';
 
-import { Card } from 'antd';
-import {
-    DragSource,
-    DropTarget,
-} from 'react-dnd'
+import { DragSource } from 'react-dnd'
 
 let isEndDrag = 'undefined';
 const Types = {
@@ -48,7 +43,7 @@ let nowPosition = {};
 })
 
 
-class CardItem extends Component{
+class Source extends Component{
     
     isUp(params){
         const x = params.screenX;
@@ -70,8 +65,6 @@ class CardItem extends Component{
 
     render(){
         const { isDragging, connectDragSource } = this.props;
-        console.log('是否正在拖拽', isDragging, '是否拖拽结束',isEndDrag)
-        console.log('属性', this.props)
         let opacity = isDragging ? 0 : 1;
         const mergeStyle = { position: 'absolute', top: nowPosition.top, left: nowPosition.left }
         return connectDragSource(
@@ -84,4 +77,4 @@ class CardItem extends Component{
     }
 }
 // let flow = require('lodash.flow');
-export default CardItem;
+export default Source;
