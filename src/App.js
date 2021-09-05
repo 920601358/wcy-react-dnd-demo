@@ -39,7 +39,7 @@ class App extends Component {
         })
     };
     render() {
-        // console.log('列表数据', this.state.CardList, this.props)
+        console.log('列表数据', this.state.CardList, this.props)
         return (
             <div className='card'>
                         <CardItem //向次级界面传递参数
